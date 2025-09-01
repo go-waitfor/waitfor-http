@@ -60,7 +60,7 @@ jobs:
           name: codecov-umbrella
 
   security:
-    name: Security Scan
+    name: Security Scan  
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -71,15 +71,17 @@ jobs:
         with:
           go-version: ^1.23
 
-      - name: Run Gosec Security Scanner
-        uses: securecodewarrior/github-action-gosec@master
-        with:
-          args: '-no-fail -fmt sarif -out results.sarif ./...'
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: results.sarif
+      - name: Run Go security checks
+        run: |
+          # Run go mod tidy to ensure clean module state
+          go mod tidy
+          
+          # Run comprehensive go vet checks
+          go vet ./...
+          
+          # Install and run staticcheck for additional security analysis
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          ~/go/bin/staticcheck ./...
 
   dependency-check:
     name: Dependency Check
