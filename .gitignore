@@ -89,4 +89,4 @@ Temporary Items
 .apdisk
 
 bin/
-dist/
+dist/coverage.html

@@ -55,5 +55,5 @@ func (h *HTTP) Test(ctx context.Context) error {
 		return errors.New(resp.Status)
 	}
 
-	return err
+	return nil
 }
